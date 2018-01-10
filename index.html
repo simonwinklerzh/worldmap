@@ -1,0 +1,113 @@
+<!DOCTYPE doctype html>
+<html>
+    <head>
+        <title>
+            Mapbox example
+        </title>
+        <script crossorigin="anonymous" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" src="https://code.jquery.com/jquery-3.2.1.min.js">
+        </script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js">
+        </script>
+        <link href="https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <style type="text/css">
+            body {
+              margin: 0;
+            }
+            .map-controls {
+              background-color: white;
+              padding: 10px;
+              position: fixed;
+              left: 15px;
+              top: 15px;
+              z-index: 10;
+            }
+        </style>
+        <div class="map-controls">
+            <b class="map-controls__title">
+                Map Controls
+            </b>
+            <br>
+                <br>
+                    <button class="map-controls__button" data-type="risk-a">
+                        Risiko A
+                    </button>
+                    <br>
+                        <br>
+                            <button class="map-controls__button" data-type="risk-b">
+                                Risiko B
+                            </button>
+                        </br>
+                    </br>
+                </br>
+            </br>
+        </div>
+        <div id="map" style="width: 100vw; height: 100vh;">
+        </div>
+        <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/74196/sketch.js" type="text/javascript">
+        </script>
+        <script type="text/javascript">
+          mapboxgl.accessToken = 'pk.eyJ1Ijoic2ltb24td2lua2xlciIsImEiOiJjajh6dWJ4N2Qyb3JxMnFvNHI2YWw5NmFrIn0.hRPaqE2IU1-Pqdo8YIMzww';
+
+
+          // $('body').css('background-color', backgroundColor);
+          $('.map-controls').hide();
+
+          const map = new mapboxgl.Map({
+            container: 'map',
+            center: [8.959870, 45.824420],
+            zoom: 3,
+            style: {
+              version: 8,
+              sources: {
+                sourceid: {
+                  type: 'geojson',
+                  data: 'custom.geo-medium.json'
+                  }
+              },
+              layers: [{
+                id: 'default',
+                type: 'fill',
+                source: 'sourceid',
+                layout: {},
+                paint: {
+                  'fill-color': '#eeeeee'
+                }
+              }, {
+                id: 'population',
+                type: 'fill',
+                source: 'sourceid',
+                layout: {},
+                filter: ['!=', 'economy', '6. Developing region'], 
+                paint: {
+                  'fill-opacity': 0.9,
+                  'fill-color': {
+                    property: 'abbrev_len',
+                    stops: [
+                      [3, '#4CA193'],
+                      [4, '#7FBCB2'],
+                      [5, '#F6979A'],
+                      [6, '#F36E71'],
+                      [7, '#ee3035']
+                    ]
+                  }
+                }
+              }, {
+                id: 'borders',
+                type: 'line',
+                source: 'sourceid',
+                layout: {},
+                paint: {
+                  'line-color': '#000000'
+                }
+              }]
+            }
+          });
+
+          map.on('load', () => {
+            console.log('map loaded');
+          });
+      </script>
+    </body>
+</html>
